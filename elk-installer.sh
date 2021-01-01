@@ -15,6 +15,7 @@ apt-get -y install elasticsearch logstash kibana
 systemctl enable elasticsearch
 systemctl enable logstash
 systemctl enable kibana
+echo "xpack.security.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 service elasticsearch start
 /usr/bin/elasticsearch/bin/elasticsearch-setup-passwords -interactive
 /usr/bin/elasticsearch/bin/elasticsearch-certutil ca --pem
