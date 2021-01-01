@@ -12,19 +12,9 @@ apt-get update
 clear
 echo "------Installing ELK Stack------"
 apt-get -y install elasticsearch logstash kibana
-clear
-echo "Please edit the Kibana config as follows:"
-echo '
-server.port: 5601
-server.host: “0.0.0.0”
-'
-sleep 10 && nano /etc/kibana/kibana.yml
 systemctl enable elasticsearch
 systemctl enable logstash
 systemctl enable kibana
-systemctl start elasticsearch
-systemctl start logstash
-systemctl start kibana
 
 ###Install Filebeat###
 
@@ -36,34 +26,13 @@ filebeat modules enable system
 filebeat modules enable netflow
 systemctl enable filebeat
 
-#--Edit Filebeat Config File--##
-clear
-echo 'Please edit the Filebeat Kibana host to be: "localhost:5601”'
-sleep 10 && nano /etc/filebeat/filebeat.yml
-
-#--Edit Filebeat Suricata Module to Point to Logs--#
-clear
-echo "Please edit the Filebeat Suricata Module config as follows:"
-echo
-echo 'var.paths: ["/var/log/suricata/*/eve.json"]'
-sleep 10 && nano /etc/filebeat/modules.d/suricata.yml
-
-#--Edit Filebeat Netflow to Listen on 0.0.0.0--#
-clear
-echo "Please edit the Filebeat Netflow host to be: 0.0.0.0"
-sleep 10 && nano /etc/filebeat/modules.d/netflow.yml
-service filebeat stop
-filebeat setup -e
-systemctl start filebeat
-
 ###Prep for Suricata Logs Ingest###
 
 clear
 echo "------Prepping System for Suricata Logs Ingest------"
 mkdir /var/log/suricata
-echo “PermitRootLogin yes” >> /etc/ssh/sshd_config #Will be updated to use restricted key-based auth
+echo “PermitRootLogin yes” >> /etc/ssh/sshd_config
 service sshd restart
-passwd root #Adds a password to the root user, use 'passwd -l root' to remove it
 
 ###Install & Configure pfELK for PFSense Firewall Logs###
 
@@ -90,6 +59,12 @@ cp -r pfelk/etc/logstash/conf.d/* /etc/logstash/conf.d/
 mkdir -p /etc/pfELK/logs/
 wget https://raw.githubusercontent.com/3ilson/pfelk/master/error-data.sh -P /etc/pfELK/
 chmod +x /etc/pfELK/error-data.sh
-service logstash restart
 echo
 echo "Installation Completed"
+echo
+echo "To Complete Setup:"
+echo "1. Create and install SSH key from remote suricata box onto this machine (ssh-keygen & ssh-copy-id)"
+echo "2. Drop the custom config files into their respective directories"
+echo "3. Start ELK services"
+echo "4. Enter passwords in configs"
+echo "5. Setup filebeat dashboards with 'filebeat setup -e'"
