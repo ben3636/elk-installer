@@ -39,11 +39,7 @@ apt install geoipupdate -y
 
 #--Edit GeoIP Config--#
 clear
-echo "Please edit GEOIP config as follows:"
-echo
-echo "Add Account Login Info"
-echo "EditionIDs GeoLite2-City GeoLite2-Country GeoLite2-ASN"
-echo "Uncomment DatabaseDirectory Line"
+echo "Please Add Account Login Info"
 sleep 10 && nano /etc/GeoIP.conf
 
 echo "00 17 * * 0 geoipupdate" >  /etc/cron.weekly/geoipupdate
