@@ -15,7 +15,10 @@ apt-get -y install elasticsearch logstash kibana
 systemctl enable elasticsearch
 systemctl enable logstash
 systemctl enable kibana
-
+service elasticsearch start
+/usr/bin/elasticsearch/bin/elasticsearch-setup-passwords -interactive
+/usr/bin/elasticsearch/bin/elasticsearch-certutil ca --pem
+###UNZIP FILE AND PLACE IN /CA###########
 ###Install Filebeat###
 
 clear
@@ -25,14 +28,6 @@ filebeat modules enable suricata
 filebeat modules enable system
 filebeat modules enable netflow
 systemctl enable filebeat
-
-###Prep for Suricata Logs Ingest###
-
-clear
-echo "------Prepping System for Suricata Logs Ingest------"
-mkdir /var/log/suricata
-echo “PermitRootLogin yes” >> /etc/ssh/sshd_config
-service sshd restart
 
 ###Install & Configure pfELK for PFSense Firewall Logs###
 
@@ -63,8 +58,11 @@ echo
 echo "Installation Completed"
 echo
 echo "To Complete Setup:"
-echo "1. Create and install SSH key from remote suricata box onto this machine (ssh-keygen & ssh-copy-id)"
-echo "2. Drop the custom config files into their respective directories"
-echo "3. Start ELK services"
-echo "4. Enter passwords in configs"
-echo "5. Setup filebeat dashboards with 'filebeat setup -e'"
+echo "1. Drop the custom config files into their respective directories"
+echo "2. Start ELK services"
+echo "3. Enter passwords in configs"
+echo "4. Setup filebeat dashboards with 'filebeat setup -e'"
+echo "5. Create logstash user in Kibana as outlined here: https://www.elastic.co/guide/en/logstash/current/ls-security.html"
+echo "6. Create normal user to view dashboards in Kibana"
+echo "7. Set PFSense to send firewall logs IP:5141 and netflow data to IP:2055"
+
