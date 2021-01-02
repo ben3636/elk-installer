@@ -15,7 +15,6 @@ apt-get -y install elasticsearch logstash kibana
 systemctl enable elasticsearch
 systemctl enable logstash
 systemctl enable kibana
-echo "xpack.security.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 service elasticsearch start
 
 #--Install Filebeat--#
@@ -33,6 +32,8 @@ service kibana start
 filebeat setup -e
 service kibana stop
 #apt install rsyslog -y #If Filebeat doesn't ship any logs on Ubuntu Server, syslog may need to be installed
+echo "xpack.security.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
+service elasticsearch restart
 
 ##--Set Up Elasticsearch Authentication--#
 /usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
