@@ -30,7 +30,8 @@ systemctl enable filebeat
 clear
 echo "------Setting Up Filebeat------"
 service elasticsearch restart
-service kibana start
+service kibana restart
+sleep 5
 filebeat setup -e
 service kibana stop
 #apt install rsyslog -y #If Filebeat doesn't ship any logs on Ubuntu Server, syslog may need to be installed
