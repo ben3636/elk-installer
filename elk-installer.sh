@@ -47,6 +47,7 @@ sleep 5
 clear
 echo "Now creating the CA key pair for Kibana's HTTPS, just hit enter to continue with the defaults"
 sleep 5
+echo
 /usr/share/elasticsearch/bin/elasticsearch-certutil ca --pem
 apt install unzip -y
 unzip /usr/share/elasticsearch/elastic-stack-ca.zip
