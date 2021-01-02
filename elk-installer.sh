@@ -42,11 +42,12 @@ apt update
 apt install geoipupdate -y
 
 #--Edit GeoIP Config--#
-mv elk-installer/GeoIP.conf /etc
+mv /root/elk-installer/GeoIP.conf /etc
 clear
 echo "Please Add Account Login Info"
-sleep 10 && nano /etc/GeoIP.conf
-
+sleep 10
+nano /etc/GeoIP.conf
+clear
 echo "00 17 * * 0 geoipupdate" >  /etc/cron.weekly/geoipupdate
 geoipupdate
 cd
