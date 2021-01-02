@@ -64,7 +64,7 @@ apt install geoipupdate -y
 #--Edit GeoIP Config--#
 mv /root/elk-installer/GeoIP.conf /etc
 clear
-echo "Please Add Maxmind Account Login Info"
+echo "Please Add Maxmind Account Login Info..."
 sleep 10
 nano /etc/GeoIP.conf
 clear
