@@ -91,6 +91,7 @@ service kibana start
 service filebeat start
 clear
 echo "To Complete Setup:"
-echo "1. Create logstash_internal user in Kibana as outlined here: https://www.elastic.co/guide/en/logstash/current/ls-security.html (USE THE PASSWORD YOU ALREADY SET)"
-echo "2. Create standard role/user to view dashboards in Kibana"
-echo "3. Set PFSense to send firewall logs IP:5141 and netflow data to IP:2055"
+echo "1. Add templates and saved objects to Kibana as shown here: http://pfelk.3ilson.com"
+echo "2. Create logstash_internal user in Kibana as outlined here: https://www.elastic.co/guide/en/logstash/current/ls-security.html (USE THE PASSWORD YOU ALREADY SET)"
+echo "3. Create standard role/user to view dashboards in Kibana"
+echo "4. Set PFSense to send firewall logs IP:5141 and netflow data to IP:2055"
