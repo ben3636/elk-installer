@@ -17,9 +17,12 @@ systemctl enable logstash
 systemctl enable kibana
 echo "xpack.security.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 service elasticsearch start
-/usr/bin/elasticsearch/bin/elasticsearch-setup-passwords -interactive
-/usr/bin/elasticsearch/bin/elasticsearch-certutil ca --pem
-###UNZIP FILE AND PLACE IN /CA###########
+/usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
+/usr/share/elasticsearch/bin/elasticsearch-certutil ca --pem
+apt install unzip -y
+unzip /usr/share/elasticsearch/elastic-stack-ca.zip
+mv ca /
+
 ###Install Filebeat###
 
 clear
@@ -51,15 +54,35 @@ cp -r pfelk/etc/logstash/conf.d/* /etc/logstash/conf.d/
 mkdir -p /etc/pfELK/logs/
 wget https://raw.githubusercontent.com/3ilson/pfelk/master/error-data.sh -P /etc/pfELK/
 chmod +x /etc/pfELK/error-data.sh
-echo
-echo "Installation Completed"
-echo
-echo "To Complete Setup:"
-echo "1. Drop the custom config files into their respective directories"
-echo "2. Start ELK services"
-echo "3. Enter passwords in configs"
-echo "4. Setup filebeat dashboards with 'filebeat setup -e'"
-echo "5. Create logstash user in Kibana as outlined here: https://www.elastic.co/guide/en/logstash/current/ls-security.html"
-echo "6. Create normal user to view dashboards in Kibana"
-echo "7. Set PFSense to send firewall logs IP:5141 and netflow data to IP:2055"
 
+###Place Custom Config Files###
+
+mv elk-installer/ELK\ Custom\ Config\ Files/filebeat/filebeat.yml /etc/filebeat/
+mv elk-installer/ELK\ Custom\ Config\ Files/filebeat/modules.d/* /etc/filebeat/modules.d/
+mv elk-installer/ELK\ Custom\ Config\ Files/kibana/kibana.yml /etc/kibana/
+mv elk-installer/ELK\ Custom\ Config\ Files/logstash/logstash.yml /etc/logstash/
+mv elk-installer/ELK\ Custom\ Config\ Files/logstash/conf.d/* /etc/logstash/conf.d/
+echo "Now you'll have to update the configs with the passwords you set..."
+sleep 5
+echo "First, add the password for the logstash_interal user to the Logstash output file (you'll create this user in Kibana shortly)"
+sleep 5
+nano /etc/logstash/conf.d/50-outputs.conf
+clear
+echo "Now update the kibana_system user's password in the Kibana config"
+sleep 5
+nano /etc/kibana/kibana.yml
+clear
+echo "Now update the 'elastic' user's password in the Filebeat config"
+sleep 5
+nano /etc/filebeat/filebeat.yml
+clear
+echo "Starting Everything Up..."
+service elasticsearch start
+service logstash start
+service kibana start
+service filebeat start
+clear
+echo "To Complete Setup:"
+echo "1. Create logstash_internal user in Kibana as outlined here: https://www.elastic.co/guide/en/logstash/current/ls-security.html (USE THE PASSWORD YOU ALREADY SET)"
+echo "2. Create standard role/user to view dashboards in Kibana"
+echo "3. Set PFSense to send firewall logs IP:5141 and netflow data to IP:2055"
