@@ -61,6 +61,7 @@ service kibana start
 filebeat setup -e
 service elasticsearch stop
 service kibana stop
+#apt install rsyslog -y #If Filebeat doesn't ship any logs on Ubuntu Server, syslog may need to be installed
 
 ###Place Custom Config Files & Add Passwords###
 
