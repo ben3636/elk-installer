@@ -42,6 +42,7 @@ apt update
 apt install geoipupdate -y
 
 #--Edit GeoIP Config--#
+mv elk-installer/GeoIP.conf /etc
 clear
 echo "Please Add Account Login Info"
 sleep 10 && nano /etc/GeoIP.conf
