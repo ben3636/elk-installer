@@ -27,6 +27,8 @@ filebeat modules enable netflow
 systemctl enable filebeat
 
 #--Setup Filebeat--#
+clear
+echo "------Setting Up Filebeat------"
 service elasticsearch restart
 service kibana start
 filebeat setup -e
