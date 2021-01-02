@@ -17,14 +17,8 @@ systemctl enable logstash
 systemctl enable kibana
 echo "xpack.security.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 service elasticsearch start
-/usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
-/usr/share/elasticsearch/bin/elasticsearch-certutil ca --pem
-apt install unzip -y
-unzip /usr/share/elasticsearch/elastic-stack-ca.zip
-mv ca /
 
-###Install Filebeat###
-
+#--Install Filebeat--#
 clear
 echo "------Installing Filebeat------"
 apt-get -y install filebeat
@@ -32,6 +26,20 @@ filebeat modules enable suricata
 filebeat modules enable system
 filebeat modules enable netflow
 systemctl enable filebeat
+
+#--Setup Filebeat--#
+service elasticsearch restart
+service kibana start
+filebeat setup -e
+service kibana stop
+#apt install rsyslog -y #If Filebeat doesn't ship any logs on Ubuntu Server, syslog may need to be installed
+
+##--Set Up Elasticsearch Authentication--#
+/usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
+/usr/share/elasticsearch/bin/elasticsearch-certutil ca --pem
+apt install unzip -y
+unzip /usr/share/elasticsearch/elastic-stack-ca.zip
+mv ca /
 
 ###Install & Configure pfELK for PFSense Firewall Logs###
 
@@ -56,14 +64,6 @@ cp -r pfelk/etc/logstash/conf.d/* /etc/logstash/conf.d/
 mkdir -p /etc/pfELK/logs/
 wget https://raw.githubusercontent.com/3ilson/pfelk/master/error-data.sh -P /etc/pfELK/
 chmod +x /etc/pfELK/error-data.sh
-
-###Setup Filebeat###
-service elasticsearch start
-service kibana start
-filebeat setup -e
-service elasticsearch stop
-service kibana stop
-#apt install rsyslog -y #If Filebeat doesn't ship any logs on Ubuntu Server, syslog may need to be installed
 
 ###Place Custom Config Files & Add Passwords###
 
