@@ -41,7 +41,7 @@ service elasticsearch restart
 
 ##--Set Up Elasticsearch Authentication--#
 clear
-echo "------Let's Set Up the Elastic Passwords------"
+echo "------Let's Set Up the Elasticsearch Passwords------"
 sleep 5
 /usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
 clear
