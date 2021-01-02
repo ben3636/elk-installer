@@ -55,11 +55,13 @@ mkdir -p /etc/pfELK/logs/
 wget https://raw.githubusercontent.com/3ilson/pfelk/master/error-data.sh -P /etc/pfELK/
 chmod +x /etc/pfELK/error-data.sh
 
+###Setup Filebeat###
 service elasticsearch start
 service kibana start
 filebeat setup -e
 service elasticsearch stop
 service kibana stop
+
 ###Place Custom Config Files & Add Passwords###
 
 mv elk-installer/ELK\ Custom\ Config\ Files/filebeat/filebeat.yml /etc/filebeat/
