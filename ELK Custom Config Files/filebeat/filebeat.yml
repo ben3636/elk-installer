@@ -208,6 +208,12 @@ processors:
   - add_docker_metadata: ~
   - add_kubernetes_metadata: ~
 
+
+  - dns:
+      type: reverse
+      fields:
+        source.ip: source.hostname
+        destination.ip : destination.hostname
 # ================================== Logging ===================================
 
 # Sets log level. The default log level is info.
@@ -267,4 +273,5 @@ processors:
 
 # This allows to enable 6.7 migration aliases
 #migration.6_to_7.enabled: true
-
+#verification_mode: none
+#setup.ilm.overwrite: true
