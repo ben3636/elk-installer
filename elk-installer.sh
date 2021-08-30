@@ -88,7 +88,7 @@ clear
 echo "Now you'll have to update the configs with the passwords you set..."
 sleep 10
 echo
-echo "First, add the password for the logstash_interal user to the Logstash output file (you'll create this user in Kibana shortly)"
+echo "First, add the password for the logstash_internal user to the Logstash output file (you'll create this user in Kibana shortly)"
 sleep 5
 nano /etc/logstash/conf.d/50-outputs.conf
 clear
